@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.pommala.arka</groupId>
+        <artifactId>arka-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <artifactId>arka-bom</artifactId>
+    <packaging>pom</packaging>
+    <name>Arka — BOM</name>
+    <description>Bill of Materials — pin all Arka OSS artifact versions for consumers.</description>
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- ── Core (10) ────────────────────────────────────────── -->
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-core</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-service</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-validation</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-provider-yaml</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-async</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-retry-fixed</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-health</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-web</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-client</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-security</artifactId><version>${arka.version}</version></dependency>
+
+            <!-- ── Email (8) ────────────────────────────────────────── -->
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-email-core</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-email-service</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-email-recipient</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-email-message</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-email-transport-javamail</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-email-template-thymeleaf</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-email-web</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-email-starter</artifactId><version>${arka.version}</version></dependency>
+
+            <!-- ── WhatsApp (5) ─────────────────────────────────────── -->
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-whatsapp-core</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-whatsapp-service</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-whatsapp-transport-meta</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-whatsapp-web</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-whatsapp-starter</artifactId><version>${arka.version}</version></dependency>
+
+            <!-- ── SMS (4) ──────────────────────────────────────────── -->
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-sms-core</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-sms-service</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-sms-web</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-sms-starter</artifactId><version>${arka.version}</version></dependency>
+
+            <!-- ── Slack (4) ────────────────────────────────────────── -->
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-slack-core</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-slack-service</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-slack-web</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-slack-starter</artifactId><version>${arka.version}</version></dependency>
+
+            <!-- ── Teams (4) ────────────────────────────────────────── -->
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-teams-core</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-teams-service</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-teams-web</artifactId><version>${arka.version}</version></dependency>
+            <dependency><groupId>com.pommala.arka</groupId><artifactId>arka-teams-starter</artifactId><version>${arka.version}</version></dependency>
+
+        </dependencies>
+    </dependencyManagement>
+</project>

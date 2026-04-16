@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<h2>Invoice Ready</h2>
+<p>Hi <span th:text="${name}">User</span>,</p>
+<p>Your invoice <strong th:text="${invoiceNumber}">#000</strong> for <strong th:text="${amount}">$0.00</strong> is ready.</p>
+<p>Due date: <span th:text="${dueDate}">TBD</span></p>
+<p style="color:#888; font-size:12px;">— The Arka Platform Team</p>
+</body>
+</html>

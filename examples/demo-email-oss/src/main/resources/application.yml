@@ -1,0 +1,129 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SPHUTA Arka — demo-email-oss
+# Replace every value marked ← with your real values before running.
+# CORS is handled by CorsConfig.java — no YAML config needed.
+# ─────────────────────────────────────────────────────────────────────────────
+
+server:
+  port: 8080
+
+spring:
+
+  # ── SMTP ──────────────────────────────────────────────────────────────────
+  # Option A: Gmail  — generate App Password at myaccount.google.com/apppasswords
+  mail:
+    host: smtp.gmail.com           # ← your SMTP host
+    port: 587
+    username: your@gmail.com       # ← your SMTP username / sender address
+    password: ${SMTP_PASSWORD}     # ← Windows: set SMTP_PASSWORD=xxxx
+    properties:                    #   Mac/Linux: export SMTP_PASSWORD=xxxx
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+
+  # Option B: Mailtrap (safe sandbox — never delivers to real inboxes)
+  # mail:
+  #   host: sandbox.smtp.mailtrap.io
+  #   port: 2525
+  #   username: your-mailtrap-username
+  #   password: your-mailtrap-password
+  #   properties:
+  #     mail.smtp.auth: true
+  #     mail.smtp.starttls.enable: true
+
+  # Option C: GreenMail (fully local — add greenmail-spring to pom.xml)
+  # mail:
+  #   host: localhost
+  #   port: 3025
+  #   username: test@localhost
+  #   password: password
+  #   properties:
+  #     mail.smtp.auth: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Arka
+# ─────────────────────────────────────────────────────────────────────────────
+arka:
+
+  # ── Security ──────────────────────────────────────────────────────────────
+  # enabled: true  → X-Arka-Api-Key header required on all /api/* requests
+  # enabled: false → no auth check (fine for local development)
+  security:
+    api-key:
+      enabled: true
+      header-name: X-Arka-Api-Key
+      keys:
+        - my-secret-key-123        # ← paste this into the tenant console API Key field
+
+  # ── Async / batch ─────────────────────────────────────────────────────────
+  async:
+    max-concurrent-sends: 10
+    batch-timeout: 30s
+    recipient-timeout: 15s
+
+  # ── Email transport timeouts ───────────────────────────────────────────────
+  email:
+    transport:
+      connection-timeout: 5s
+      read-timeout: 10s
+      write-timeout: 10s
+    policy:
+      runtime-validation:
+        invalid-to-action: FAIL
+        invalid-cc-action: DROP_WARN
+        invalid-bcc-action: DROP_WARN
+
+  # ── Retry ─────────────────────────────────────────────────────────────────
+  retry:
+    max-attempts: 3
+    delay: 2000ms
+
+  # ── Flows ─────────────────────────────────────────────────────────────────
+  # Each key maps to a Thymeleaf template at:
+  #   src/main/resources/templates/{template}.html
+  flows:
+
+    welcome-email:
+      template: email/welcome          # → templates/email/welcome.html
+      subject: "Welcome to Arka"
+      sender-ref: default-sender
+
+    password-reset:
+      template: email/password-reset   # → templates/email/password-reset.html
+      subject: "Reset your password"
+      sender-ref: default-sender
+
+    invoice:
+      template: email/invoice          # → templates/email/invoice.html
+      subject: "Your invoice is ready"
+      sender-ref: default-sender
+
+  # ── Senders ───────────────────────────────────────────────────────────────
+  senders:
+    default-sender:
+      from: your@gmail.com             # ← must match spring.mail.username for Gmail
+      display-name: "Arka Platform"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Actuator — health endpoint used by the tenant console connection check
+# ─────────────────────────────────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Logging
+# ─────────────────────────────────────────────────────────────────────────────
+logging:
+  level:
+    com.pommala.arka: INFO
+    # Set to DEBUG to see the full pipeline trace including each step:
+    # com.pommala.arka: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %5level [%15.15t] %-40.40logger{39} : %msg\
+ [corrId=%X{correlationId}] [reqId=%X{requestId}]%n"

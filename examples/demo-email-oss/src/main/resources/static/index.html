@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arka — Email Demo Console</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f8f9fb; --surface:#fff; --surface-alt:#f1f3f7;
+  --border:#e2e6ed; --border-active:#e8640a;
+  --text:#1a1d26; --text-sec:#5a6070; --text-dim:#8891a4;
+  --accent:#e8640a; --accent-lt:#fef3eb; --accent-hov:#cc5600;
+  --ok:#16a34a; --ok-bg:#f0fdf4; --ok-bd:#bbf7d0;
+  --err:#dc2626; --err-bg:#fef2f2; --err-bd:#fecaca;
+  --info:#2563eb; --info-bg:#eff6ff; --info-bd:#bfdbfe;
+  --navy:#0f1b3d; --r:8px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --sh-lg:0 4px 16px rgba(0,0,0,.08);
+  --mono:'JetBrains Mono','Fira Code',monospace;
+  --sans:'DM Sans',-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh}
+
+.hdr{background:var(--navy);border-bottom:3px solid var(--accent);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.logo{width:28px;height:28px;border-radius:6px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff}
+.hdr-t{font-size:16px;font-weight:600;color:#fff}.hdr-t span{color:var(--accent);font-weight:400;margin-left:6px}
+.badge{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.08);padding:3px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.st-pill{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.6);font-family:var(--mono)}
+.st-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim)}
+.st-dot.up{background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,.5)}.st-dot.down{background:var(--err)}.st-dot.chk{background:#facc15;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.wrap{max-width:960px;margin:0 auto;padding:28px 24px}
+
+.cfg{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;margin-bottom:20px;box-shadow:var(--sh)}
+.cfg-row{display:flex;gap:12px;align-items:flex-end}
+.cfg-f{flex:1}
+.cfg-lbl{display:block;margin-bottom:5px;font-size:11px;font-family:var(--mono);color:var(--text-dim);text-transform:uppercase;letter-spacing:.8px}
+.cfg-in{width:100%;padding:8px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface-alt);font-family:var(--mono);font-size:13px;color:var(--text);outline:none;transition:border-color .15s}
+.cfg-in:focus{border-color:var(--border-active)}
+.cfg-btn{padding:8px 18px;border-radius:6px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--text-sec);transition:all .15s;white-space:nowrap}
+.cfg-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px}
+.tab{padding:10px 22px;border:none;cursor:pointer;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.4px;text-transform:uppercase;color:var(--text-dim);background:transparent;border-bottom:2px solid transparent;transition:all .15s}
+.tab:hover{color:var(--text-sec)}.tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-lt)}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.card-b{padding:24px}
+
+.fg{margin-bottom:18px}
+.fl{display:block;margin-bottom:6px;font-size:11px;font-family:var(--mono);color:var(--text-dim);text-transform:uppercase;letter-spacing:.8px}
+.fl .req{color:var(--accent)}
+.fi{width:100%;padding:10px 14px;border-radius:6px;border:1px solid var(--border);background:var(--bg);font-size:14px;color:var(--text);outline:none;font-family:var(--sans);transition:border-color .15s}
+.fi:focus{border-color:var(--border-active)}.fi.mono{font-family:var(--mono);font-size:13px}
+textarea.fi{resize:vertical;min-height:80px;line-height:1.5}
+.fh{font-size:11px;color:var(--text-dim);margin-top:4px;font-family:var(--mono)}
+.fr{display:flex;gap:14px}.fr>*{flex:1}
+
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:6px;border:none;cursor:pointer;font-family:var(--sans);font-size:14px;font-weight:600;transition:all .15s}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{background:var(--accent-hov);transform:translateY(-1px);box-shadow:var(--sh-lg)}.btn-p:active{transform:translateY(0)}.btn-p:disabled{background:var(--border);color:var(--text-dim);cursor:not-allowed;transform:none;box-shadow:none}
+.btn-g{background:transparent;color:var(--text-sec);border:1px solid var(--border)}.btn-g:hover{border-color:var(--text-dim)}
+.btn-bar{display:flex;gap:10px;margin-top:24px}
+
+.rp{margin-top:20px;border-radius:var(--r);border:1px solid var(--border);overflow:hidden}
+.rp-h{padding:10px 16px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between}
+.rp-h.ok{background:var(--ok-bg);color:var(--ok);border-bottom:1px solid var(--ok-bd)}
+.rp-h.err{background:var(--err-bg);color:var(--err);border-bottom:1px solid var(--err-bd)}
+.rp-h.info{background:var(--info-bg);color:var(--info);border-bottom:1px solid var(--info-bd)}
+.rp-b{padding:16px;background:var(--bg);font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--text-sec);white-space:pre-wrap;word-break:break-all;max-height:220px;overflow-y:auto}
+.rp-t{font-size:10px;opacity:.7}
+
+.hist{margin-top:32px}
+.hist-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.hist-t{font-family:var(--mono);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--text-dim)}
+.hist-cnt{font-family:var(--mono);font-size:11px;color:var(--text-dim);background:var(--surface-alt);padding:2px 10px;border-radius:10px;border:1px solid var(--border)}
+.hist-empty{text-align:center;padding:32px;color:var(--text-dim);font-size:13px;background:var(--surface);border:1px dashed var(--border);border-radius:var(--r)}
+.hi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:8px;transition:box-shadow .15s}
+.hi:hover{box-shadow:var(--sh-lg)}
+.hi-h{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;gap:12px}
+.hi-l{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.hi-badge{font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;letter-spacing:.3px;flex-shrink:0}
+.hi-badge.ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-bd)}
+.hi-badge.fail{background:var(--err-bg);color:var(--err);border:1px solid var(--err-bd)}
+.hi-type{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--accent);background:var(--accent-lt);padding:2px 8px;border-radius:4px;flex-shrink:0}
+.hi-sum{font-size:13px;color:var(--text-sec);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi-r{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.hi-meta{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-align:right;line-height:1.5}
+.hi-chev{color:var(--text-dim);font-size:14px;transition:transform .2s;font-family:var(--mono)}
+.hi-chev.open{transform:rotate(90deg)}
+.hi-det{border-top:1px solid var(--border);display:none}
+.hi-det.open{display:block}
+.hi-det-grid{display:grid;grid-template-columns:1fr 1fr}
+.hi-det-pane{padding:12px 16px}
+.hi-det-pane:first-child{border-right:1px solid var(--border)}
+.hi-det-lbl{font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:var(--text-dim);margin-bottom:6px}
+.hi-det-code{font-family:var(--mono);font-size:11px;color:var(--text-sec);line-height:1.6;white-space:pre-wrap;word-break:break-all;max-height:180px;overflow-y:auto;background:var(--bg);padding:10px;border-radius:4px;border:1px solid var(--border)}
+
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.footer{text-align:center;padding:24px;font-size:11px;color:var(--text-dim);font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="logo">A</div>
+    <div class="hdr-t">ARKA<span>Email Demo</span></div>
+    <div class="badge">OSS</div>
+  </div>
+  <div class="st-pill"><div class="st-dot" id="stDot"></div><span id="stTxt">Disconnected</span></div>
+</div>
+
+<div class="wrap">
+  <div class="cfg">
+    <div class="cfg-row">
+      <div class="cfg-f"><label class="cfg-lbl">Base URL</label><input class="cfg-in" id="baseUrl" value="http://localhost:8080"/></div>
+      <div class="cfg-f"><label class="cfg-lbl">API Key</label><input class="cfg-in" id="apiKey" value="my-secret-key-123"/></div>
+      <button class="cfg-btn" onclick="checkConn()">Test Connection</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="single" onclick="swTab('single')">Single Send</button>
+    <button class="tab" data-tab="batch" onclick="swTab('batch')">Batch Send</button>
+  </div>
+
+  <div class="card" id="tab-single">
+    <div class="card-b">
+      <div class="fr">
+        <div class="fg"><label class="fl">Flow Key <span class="req">*</span></label>
+          <select class="fi" id="sFlowKey"><option>welcome-email</option><option>password-reset</option><option>invoice</option></select></div>
+        <div class="fg"><label class="fl">Subject Override</label><input class="fi" id="sSubject" placeholder="Leave blank for flow default"/></div>
+      </div>
+      <div class="fg"><label class="fl">To <span class="req">*</span></label><input class="fi mono" id="sTo" placeholder="recipient@example.com"/></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">CC</label><input class="fi mono" id="sCc" placeholder="cc@example.com"/></div>
+        <div class="fg"><label class="fl">BCC</label><input class="fi mono" id="sBcc" placeholder="bcc@example.com"/></div>
+      </div>
+      <div class="fg"><label class="fl">Template Variables (JSON)</label>
+        <textarea class="fi mono" id="sModel">{"name": "JayaKumar", "product": "Arka"}</textarea>
+        <div class="fh">${name}, ${product}, ${resetLink}, ${invoiceNumber}, ${amount}, ${dueDate}</div></div>
+      <div class="btn-bar">
+        <button class="btn btn-p" id="sBtn" onclick="sendSingle()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>Send Email</button>
+        <button class="btn btn-g" onclick="clearForm('single')">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="tab-batch" style="display:none">
+    <div class="card-b">
+      <div class="fg"><label class="fl">Flow Key <span class="req">*</span></label>
+        <select class="fi" id="bFlowKey"><option>welcome-email</option><option>password-reset</option><option>invoice</option></select></div>
+      <div class="fg"><label class="fl">Recipients <span class="req">*</span></label>
+        <textarea class="fi mono" id="bAddr" rows="3" placeholder="one@example.com&#10;two@example.com"></textarea>
+        <div class="fh">One email per line. Each recipient gets a separate email.</div></div>
+      <div class="fg"><label class="fl">Shared Template Variables (JSON)</label>
+        <textarea class="fi mono" id="bModel">{"name": "Team", "product": "Arka"}</textarea></div>
+      <div class="btn-bar">
+        <button class="btn btn-p" id="bBtn" onclick="sendBatch()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Send Batch</button>
+        <button class="btn btn-g" onclick="clearForm('batch')">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="respArea"></div>
+
+  <div class="hist">
+    <div class="hist-hdr">
+      <span class="hist-t">Send History</span>
+      <span class="hist-cnt" id="histCnt">0</span>
+    </div>
+    <div id="histList"><div class="hist-empty">No messages sent yet. Use the form above to send your first email.</div></div>
+  </div>
+</div>
+
+<div class="footer">&copy; 2026 Pommala LLC. All Rights Reserved. SPHUTA Arka&trade; is the Intellectual Property of Pommala LLC.</div>
+
+<script>
+const hist=[];
+
+function swTab(t){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-tab="'+t+'"]').classList.add('active');
+  document.getElementById('tab-single').style.display=t==='single'?'block':'none';
+  document.getElementById('tab-batch').style.display=t==='batch'?'block':'none';
+}
+
+function cfg(){return{base:document.getElementById('baseUrl').value.replace(/\/+$/,''),key:document.getElementById('apiKey').value}}
+
+function showResp(type,title,body,ms){
+  document.getElementById('respArea').innerHTML=
+    '<div class="rp"><div class="rp-h '+type+'"><span>'+title+'</span><span class="rp-t">'+(ms?ms+'ms':'')+'</span></div>'+
+    '<div class="rp-b">'+(typeof body==='string'?esc(body):esc(JSON.stringify(body,null,2)))+'</div></div>';
+}
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function setLoad(id,on){
+  var b=document.getElementById(id);
+  if(on){b.disabled=true;b._h=b.innerHTML;b.innerHTML='<span class="spinner"></span> Sending\u2026';}
+  else{b.disabled=false;b.innerHTML=b._h;}
+}
+
+function apiCall(path,body){
+  var c=cfg(),s=performance.now();
+  return fetch(c.base+path,{method:'POST',headers:{'Content-Type':'application/json','X-Arka-Api-Key':c.key},body:JSON.stringify(body)})
+    .then(function(r){
+      var ms=Math.round(performance.now()-s);
+      return r.json().then(function(d){return{ok:r.ok,status:r.status,data:d,ms:ms}});
+    });
+}
+
+function parseModel(id){
+  var v=document.getElementById(id).value.trim();
+  if(!v)return{};
+  try{return JSON.parse(v)}catch(e){showResp('err','Invalid JSON','Template variables must be valid JSON:\n'+e.message);return null;}
+}
+
+function addHist(type,flowKey,recipients,request,response,ok,ms){
+  hist.unshift({id:Date.now(),type:type,flowKey:flowKey,recipients:recipients,request:request,response:response,ok:ok,ms:ms,
+    time:new Date().toLocaleTimeString(),expanded:false});
+  renderHist();
+}
+
+function toggleHist(id){
+  for(var i=0;i<hist.length;i++){if(hist[i].id===id){hist[i].expanded=!hist[i].expanded;break;}}
+  renderHist();
+}
+
+function clearHist(){hist.length=0;renderHist();}
+
+function renderHist(){
+  document.getElementById('histCnt').textContent=hist.length;
+  var el=document.getElementById('histList');
+  if(!hist.length){el.innerHTML='<div class="hist-empty">No messages sent yet. Use the form above to send your first email.</div>';return;}
+  var html='';
+  for(var i=0;i<hist.length;i++){
+    var h=hist[i];
+    var rcpt=Array.isArray(h.recipients)?h.recipients.join(', '):h.recipients;
+    if(rcpt.length>40)rcpt=rcpt.substring(0,40)+'\u2026';
+    html+='<div class="hi">';
+    html+='<div class="hi-h" onclick="toggleHist('+h.id+')">';
+    html+='<div class="hi-l">';
+    html+='<span class="hi-badge '+(h.ok?'ok':'fail')+'">'+(h.ok?'OK':'FAIL')+'</span>';
+    html+='<span class="hi-type">'+esc(h.type)+'</span>';
+    html+='<span class="hi-sum"><strong>'+esc(h.flowKey)+'</strong> &rarr; '+esc(rcpt)+'</span>';
+    html+='</div>';
+    html+='<div class="hi-r">';
+    html+='<div class="hi-meta">'+esc(h.time)+'<br>'+h.ms+'ms</div>';
+    html+='<span class="hi-chev'+(h.expanded?' open':'')+'">&rsaquo;</span>';
+    html+='</div></div>';
+    html+='<div class="hi-det'+(h.expanded?' open':'')+'">';
+    html+='<div class="hi-det-grid">';
+    html+='<div class="hi-det-pane"><div class="hi-det-lbl">Request</div><div class="hi-det-code">'+esc(JSON.stringify(h.request,null,2))+'</div></div>';
+    html+='<div class="hi-det-pane"><div class="hi-det-lbl">Response</div><div class="hi-det-code">'+esc(JSON.stringify(h.response,null,2))+'</div></div>';
+    html+='</div></div></div>';
+  }
+  html+='<div style="text-align:center;margin-top:12px"><button class="btn btn-g" style="font-size:12px;padding:6px 16px" onclick="clearHist()">Clear History</button></div>';
+  el.innerHTML=html;
+}
+
+function sendSingle(){
+  var model=parseModel('sModel'); if(model===null)return;
+  var to=document.getElementById('sTo').value.trim();
+  if(!to){showResp('err','Validation Error','Recipient address (To) is required.');return;}
+  var body={flowKey:document.getElementById('sFlowKey').value,to:[to],
+    cc:document.getElementById('sCc').value.trim()?[document.getElementById('sCc').value.trim()]:[],
+    bcc:document.getElementById('sBcc').value.trim()?[document.getElementById('sBcc').value.trim()]:[],model:model};
+  var subj=document.getElementById('sSubject').value.trim();
+  if(subj)body.subjectOverride=subj;
+
+  setLoad('sBtn',true);
+  apiCall('/api/v1/email/send',body).then(function(r){
+    showResp(r.ok?'ok':'err',r.ok?'\u2713 Delivered \u2014 '+r.status:'\u2717 Failed \u2014 '+r.status,r.data,r.ms);
+    addHist('SINGLE',body.flowKey,body.to,body,r.data,r.ok,r.ms);
+  }).catch(function(e){
+    showResp('err','Connection Error',e.message);
+    addHist('SINGLE',body.flowKey,body.to,body,{error:e.message},false,0);
+  }).finally(function(){setLoad('sBtn',false);});
+}
+
+function sendBatch(){
+  var model=parseModel('bModel'); if(model===null)return;
+  var raw=document.getElementById('bAddr').value.trim();
+  if(!raw){showResp('err','Validation Error','At least one recipient is required.');return;}
+  var addresses=raw.split('\n').map(function(s){return s.trim()}).filter(Boolean);
+  var body={flowKey:document.getElementById('bFlowKey').value,addresses:addresses,model:model};
+
+  setLoad('bBtn',true);
+  apiCall('/api/v1/email/batch',body).then(function(r){
+    showResp(r.ok?'ok':'err',r.ok?'\u2713 Batch Complete \u2014 '+r.status:'\u2717 Batch Failed \u2014 '+r.status,r.data,r.ms);
+    addHist('BATCH',body.flowKey,addresses,body,r.data,r.ok,r.ms);
+  }).catch(function(e){
+    showResp('err','Connection Error',e.message);
+    addHist('BATCH',body.flowKey,addresses,body,{error:e.message},false,0);
+  }).finally(function(){setLoad('bBtn',false);});
+}
+
+function checkConn(){
+  var dot=document.getElementById('stDot'),txt=document.getElementById('stTxt');
+  dot.className='st-dot chk';txt.textContent='Checking\u2026';
+  var c=cfg();
+  fetch(c.base+'/actuator/health',{signal:AbortSignal.timeout(5000)}).then(function(r){
+    if(r.ok){dot.className='st-dot up';txt.textContent='Connected';showResp('ok','\u2713 Connection OK','Arka platform is reachable at '+c.base);}
+    else{dot.className='st-dot down';txt.textContent='Error '+r.status;showResp('err','\u2717 Connection Failed','HTTP '+r.status);}
+  }).catch(function(){
+    dot.className='st-dot down';txt.textContent='Unreachable';
+    showResp('err','\u2717 Connection Failed','Could not reach '+c.base+'\n\nMake sure the demo app is running:\n  cd examples/demo-email-oss\n  mvn spring-boot:run');
+  });
+}
+
+function clearForm(t){
+  if(t==='single'){['sTo','sCc','sBcc','sSubject'].forEach(function(id){document.getElementById(id).value=''});document.getElementById('sModel').value='{"name": "JayaKumar", "product": "Arka"}';}
+  else{document.getElementById('bAddr').value='';document.getElementById('bModel').value='{"name": "Team", "product": "Arka"}';}
+  document.getElementById('respArea').innerHTML='';
+}
+
+window.addEventListener('load',function(){setTimeout(checkConn,500)});
+</script>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.0.4</version>
+        <relativePath/>
+    </parent>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         Arka — Multi-Channel Communication Platform
+         Pommala LLC
+         ══════════════════════════════════════════════════════════════════ -->
+    <groupId>com.pommala.arka</groupId>
+    <artifactId>arka-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Arka Platform — Parent</name>
+    <description>
+        Arka is a multi-channel communication platform with a core engine
+        and channel-specific edges for Email, WhatsApp, SMS, and Slack.
+        Repo: Pommala-LLC/arka | GroupId: com.pommala.arka
+    </description>
+
+    <!-- ── Properties ─────────────────────────────────────────────────── -->
+    <properties>
+        <java.version>21</java.version>
+        <arka.version>1.0.0-SNAPSHOT</arka.version>
+        <resilience4j.version>2.2.0</resilience4j.version>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         MODULE INVENTORY (OSS)
+         ══════════════════════════════════════════════════════════════════
+
+         Core engine (10 modules)
+         ────────────────────────
+         core, service, validation, provider-yaml, async,
+         retry-fixed, health, web, client, security
+
+         Email edge (8 modules)
+         ──────────────────────
+         email-core, email-service, email-recipient, email-message,
+         email-transport-javamail, email-template-thymeleaf,
+         email-web, email-starter
+
+         WhatsApp edge (5 modules)
+         ─────────────────────────
+         whatsapp-core, whatsapp-service, whatsapp-transport-meta,
+         whatsapp-web, whatsapp-starter
+
+         SMS edge (4 modules)
+         ────────────────────
+         sms-core, sms-service, sms-web, sms-starter
+
+         Slack edge (4 modules)
+         ──────────────────────
+         slack-core, slack-service, slack-web, slack-starter
+
+         Teams edge (4 modules)
+         ──────────────────────
+         teams-core, teams-service, teams-web, teams-starter
+
+         Total: 35 modules + BOM + 7 testing + 3 examples = 46
+
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <modules>
+
+        <!-- ── Core engine — OSS ──────────────────────────────────── -->
+        <module>core/arka-core</module>
+        <module>core/arka-service</module>
+        <module>core/arka-validation</module>
+        <module>core/arka-provider-yaml</module>
+        <module>core/arka-async</module>
+        <module>core/arka-retry-fixed</module>
+        <module>core/arka-health</module>
+        <module>core/arka-web</module>
+        <module>core/arka-client</module>
+        <module>core/arka-security</module>
+
+        <!-- ── Channel: Email (OSS) ─────────────────────────────────── -->
+        <module>channels/email/arka-email-core</module>
+        <module>channels/email/arka-email-service</module>
+        <module>channels/email/arka-email-recipient</module>
+        <module>channels/email/arka-email-message</module>
+        <module>channels/email/arka-email-transport-javamail</module>
+        <module>channels/email/arka-email-template-thymeleaf</module>
+        <module>channels/email/arka-email-web</module>
+        <module>channels/email/arka-email-starter</module>
+
+        <!-- ── Channel: WhatsApp (OSS) ──────────────────────────────── -->
+        <module>channels/whatsapp/arka-whatsapp-core</module>
+        <module>channels/whatsapp/arka-whatsapp-service</module>
+        <module>channels/whatsapp/arka-whatsapp-transport-meta</module>
+        <module>channels/whatsapp/arka-whatsapp-web</module>
+        <module>channels/whatsapp/arka-whatsapp-starter</module>
+
+        <!-- ── Channel: SMS (OSS) ───────────────────────────────────── -->
+        <module>channels/sms/arka-sms-core</module>
+        <module>channels/sms/arka-sms-service</module>
+        <module>channels/sms/arka-sms-web</module>
+        <module>channels/sms/arka-sms-starter</module>
+
+        <!-- ── Channel: Slack (OSS) ─────────────────────────────────── -->
+        <module>channels/slack/arka-slack-core</module>
+        <module>channels/slack/arka-slack-service</module>
+        <module>channels/slack/arka-slack-web</module>
+        <module>channels/slack/arka-slack-starter</module>
+
+        <!-- ── Channel: Teams (OSS) ─────────────────────────────────── -->
+        <module>channels/teams/arka-teams-core</module>
+        <module>channels/teams/arka-teams-service</module>
+        <module>channels/teams/arka-teams-web</module>
+        <module>channels/teams/arka-teams-starter</module>
+
+        <!-- ── BOM ───────────────────────────────────────────────────── -->
+        <module>bom/arka-bom</module>
+
+        <!-- ── Testing ───────────────────────────────────────────────── -->
+        <module>testing/arka-test-support</module>
+        <module>testing/arka-test-fixtures</module>
+        <module>testing/arka-email-test</module>
+        <module>testing/arka-whatsapp-test</module>
+        <module>testing/arka-sms-test</module>
+        <module>testing/arka-slack-test</module>
+        <module>testing/arka-teams-test</module>
+
+        <!-- ── Examples ──────────────────────────────────────────────── -->
+        <module>examples/demo-email-oss</module>
+        <module>examples/demo-whatsapp-oss</module>
+        <module>examples/demo-multi-channel</module>
+
+    </modules>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         DEPENDENCY MANAGEMENT
+         All inter-module dependencies use ${arka.version}.
+         External library versions pinned here — never in child POMs.
+         ══════════════════════════════════════════════════════════════════ -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- ── Core engine ──────────────────────────────────── -->
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-core</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-service</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-validation</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-provider-yaml</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-provider-db</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-provider-hybrid</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-async</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-retry-fixed</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-circuit-breaker</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-observability</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-health</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-security</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-audit</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-outbox</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-idempotency</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-tenant</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-dlq</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-scheduler</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-web</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-client</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-web-console</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+
+            <!-- ── Email edge ────────────────────────────────────── -->
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-core</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-service</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-recipient</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-message</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-transport-javamail</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-transport-ses</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-transport-sendgrid</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-transport-mailgun</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-template-thymeleaf</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-web</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-starter</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-starter-enterprise</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-email-starter-full</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+
+            <!-- ── WhatsApp edge ─────────────────────────────────── -->
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-whatsapp-core</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-whatsapp-service</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-whatsapp-transport-meta</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-whatsapp-template-meta</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-whatsapp-webhook-status</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-whatsapp-web</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-whatsapp-starter</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-whatsapp-starter-enterprise</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-whatsapp-starter-full</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+
+            <!-- ── SMS edge ──────────────────────────────────────── -->
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-sms-core</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-sms-service</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-sms-starter</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-sms-starter-enterprise</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-sms-starter-full</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+
+            <!-- ── Slack edge ────────────────────────────────────── -->
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-slack-core</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-slack-service</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-slack-starter</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-slack-starter-enterprise</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-slack-starter-full</artifactId>
+                <version>${arka.version}</version>
+            </dependency>
+
+            <!-- ── Test support ──────────────────────────────────── -->
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-test-support</artifactId>
+                <version>${arka.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.pommala.arka</groupId>
+                <artifactId>arka-test-fixtures</artifactId>
+                <version>${arka.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- ── Resilience4j ──────────────────────────────────── -->
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-spring-boot3</artifactId>
+                <version>${resilience4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-circuitbreaker</artifactId>
+                <version>${resilience4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-retry</artifactId>
+                <version>${resilience4j.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         BUILD — compiler, enforcer, checkstyle, spotless, archunit
+         ══════════════════════════════════════════════════════════════════ -->
+    <build>
+        <pluginManagement>
+            <plugins>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <release>21</release>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <useModulePath>false</useModulePath>
+                    </configuration>
+                </plugin>
+
+                <!-- Enforcer — Java 21, no SNAPSHOT deps in release -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>enforce-baseline</id>
+                            <goals><goal>enforce</goal></goals>
+                            <configuration>
+                                <rules>
+                                    <requireJavaVersion>
+                                        <version>[21,)</version>
+                                    </requireJavaVersion>
+                                    <requireMavenVersion>
+                                        <version>[3.9,)</version>
+                                    </requireMavenVersion>
+                                    <banDuplicatePomDependencyVersions/>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Checkstyle — rules in build/checkstyle/ -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.3.1</version>
+                    <configuration>
+                        <configLocation>build/checkstyle/arka-checkstyle.xml</configLocation>
+                        <failsOnError>true</failsOnError>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    </configuration>
+                </plugin>
+
+                <!-- Spotless — formatting rules in build/spotless/ -->
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>2.43.0</version>
+                    <configuration>
+                        <java>
+                            <googleJavaFormat>
+                                <version>1.19.2</version>
+                            </googleJavaFormat>
+                            <importOrder/>
+                            <removeUnusedImports/>
+                        </java>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         PROFILES
+         ══════════════════════════════════════════════════════════════════ -->
+    <profiles>
+
+        <!-- ArchUnit boundary enforcement — run with -Parchunit -->
+        <profile>
+            <id>archunit</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*ArchTest.java</include>
+                                <include>**/*ArchitectureTest.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- GraalVM native image — future upgrade path -->
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+
+</project>

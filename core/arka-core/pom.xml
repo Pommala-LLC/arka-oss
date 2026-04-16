@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.pommala.arka</groupId>
+        <artifactId>arka-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>arka-core</artifactId>
+    <name>Arka — Core</name>
+    <description>
+        Shared platform contracts — SPIs, API interfaces, base exception hierarchy,
+        application codes, and immutable value objects. Zero external runtime dependencies.
+        Every Arka module depends on this. Core never imports a module.
+    </description>
+
+    <dependencies>
+        <!-- Null safety annotations — compile scope only -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- Spring Core for Assert utilities — no Spring context pulled in -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

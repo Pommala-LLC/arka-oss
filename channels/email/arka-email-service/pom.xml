@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.pommala.arka</groupId>
+        <artifactId>arka-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../../pom.xml</relativePath>
+    </parent>
+    <artifactId>arka-email-service</artifactId>
+    <name>Arka — Email Service</name>
+    <description>
+        Email channel send pipeline: DefaultEmailSendHandler, DefaultEmailFlowValidator,
+        YamlEmailFlowProvider, VirtualThreadEmailBatchDispatcher. Typed batch dispatch
+        lives here — not in shared arka-async.
+    </description>
+    <dependencies>
+        <dependency>
+            <groupId>com.pommala.arka</groupId>
+            <artifactId>arka-core</artifactId>
+            <version>${arka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pommala.arka</groupId>
+            <artifactId>arka-email-core</artifactId>
+            <version>${arka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pommala.arka</groupId>
+            <artifactId>arka-service</artifactId>
+            <version>${arka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pommala.arka</groupId>
+            <artifactId>arka-async</artifactId>
+            <version>${arka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pommala.arka</groupId>
+            <artifactId>arka-retry-fixed</artifactId>
+            <version>${arka.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.pommala.arka</groupId>
+            <artifactId>arka-provider-yaml</artifactId>
+            <version>${arka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
+</project>
